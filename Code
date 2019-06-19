@@ -1,0 +1,1035 @@
+install.packages("dplyr")
+install.packages("ggplot2")
+
+library(dplyr)
+library(ggplot2)
+
+head(mpg)
+dim(mpg)
+str(mpg)
+summary(mpg)
+View(mpg)
+
+mpg %>% 
+  group_by(manufacturer) %>%
+  summarise(mean.hwy=mean(hwy)) %>%
+  arrange(desc(mean.hwy))
+
+lm.mpg <- lm(hwy ~ displ, data = mpg)
+
+summary(lm.mpg)
+
+qplot(data = mpg, x = displ, y = hwy)
+
+mean(mpg$hwy)
+max(mpg$hwy)
+min(mpg$hwy)
+hist(mpg$hwy)
+
+a <- 1
+b <- 2
+c <- 3
+ab <- 3.5
+
+a+b
+a+b+c
+4/b
+5*b
+
+d <- c(1, 2, 3, 4, 5)
+e <- c(1:5)
+f <- seq(1, 5)
+g <- seq(1, 10, by=2)
+d+2
+d+e
+
+a2 <- "a"
+a2
+b2 <- "text"
+b2
+c2 <- "Hello world!"
+c2
+e2 <- c("Hello", "World", "is", "good!")
+e2
+sprintf(e2)
+a2+2
+a2+b2
+
+a <- c(1, 2, 3)
+mean(a)
+max(a)
+min(a)
+
+b <- c("a", "a", "b", "c")
+b
+qplot(b)
+e2
+paste(e2, collapse = " ")
+e2_paste <- paste(e2, collapse = " ")
+e2_paste
+e3_paste <- paste(e2, collapse = ",")
+e3_paste
+
+history <- c(90, 80, 60, 70)
+history
+
+math <- c(50, 60, 100, 20)
+math
+
+df_midterm <- data.frame(history, math)
+df_midterm
+class <- c(1, 1, 2, 2)
+class
+df_midterm <- data.frame(df_midterm, class)
+df_midterm
+mean(df_midterm$math)
+mean(df_midterm$history)
+
+install.packages("readxl")
+library(readxl)
+
+df_finalexam <- read_excel("D:/RRroject/01_data/finalexam.xlxs", sheet=1, col_names = T)
+
+df_finalexam
+
+mean(df_finalexam$math)
+mean(df_finalexam$history)
+mean(df_finalexam$english)
+
+plot(x=df_finalexam$math, y=df_finalexam$history)
+
+read.csv("D:/RProject/01_data/csv_exam.csv", header = T)
+
+write.csv(df_finalexam, file = "output_newdata.csv")
+
+exam <- read.csv("D:/RProject/01_data/csv_exam.csv", header = T)
+head(exam)
+head(exam, 10)
+tail(exam)
+tail(exam, 10)
+View(exam)
+dim(exam)
+str(exam)
+summary(exam)
+
+mpg <- as.data.frame(ggplot2::mpg)
+head(mpg)
+str(mpg)
+summary(mpg)
+glimpse(mpg)
+dplyr::glimpse(mpg)
+library(dplyr)
+
+df_raw <- data.frame(var1=c(1, 2, 1), var2 = c(2, 3, 1))
+df_raw
+
+df_new <- df_raw
+df_new
+
+df_new <- rename(df_new, v2 = var2)
+df_new
+
+mpg_copy <- mpg
+mpg_copy <- rename(mpg_copy, city = cty, highway = hwy)
+head(mpg_copy)
+glimpse(mpg_copy)
+
+df <- data.frame(var1 = c(4, 3, 8), var2 = c(2, 6, 1))
+df
+
+(df$var_sum <- df$var1 + df$var2)
+df
+
+df$var_mean <- df$var_sum/2
+df
+
+mpg <- as.data.frame(ggplot2::mpg)
+mpg$total <- (mpg$cty + mpg$hwy)/2
+head(mpg)
+
+mean(mpg$total)
+
+summary(mpg$total)
+hist(mpg$total)
+
+mpg$test <- ifelse(mpg$total >= 20, "pass", "fail")
+dplyr::glimpse(mpg)
+
+table(mpg$test)
+prop.table(mpg$test)
+
+library(ggplot2)
+qplot(mpg$test)
+
+library(dplyr)
+
+mpg$grade <- ifelse(mpg$total >= 30, "A",
+                    ifelse(mpg$total >= 20, "B", "C"))
+head(mpg)
+
+table(mpg$grade)
+qplot(mpg$grade)
+
+midwest <- as.data.frame(midwest)
+str(midwest)
+glimpse(midwest)
+
+midwest <- rename(midwest, total = poptotal, asian = popasian)
+head(midwest)
+
+midwest$ratio_asian <- midwest$asian/midwest$total*100
+hist(midwest$ratio_asian)
+View(midwest)
+
+mean(midwest$ratio_asian)
+
+midwest$grade_asian <- ifelse(midwest$ratio_asian > mean(midwest$ratio_asian), "large", "small")
+
+table(midwest$grade_asian)
+qplot(midwest$grade_asian)
+
+exam
+
+exam %>% filter(english > 50)
+exam %>% filter(class == 1 & math >= 50)
+
+exam %>% filter(math >= 90 | english >= 90)
+
+exam %>% filter(class == 1 | class == 3 | class == 5)
+exam %>% filter(class %in% c(1, 3, 5))
+
+exam_1 <- exam %>% filter(class == 1)
+exam_2 <- exam %>% filter(class == 2)
+mean(exam_1$math)
+mean(exam_2$math)
+mpg
+
+mpg_displ_1 <- mpg %>% filter(displ <= 4)
+mpg_displ_2 <- mpg %>% filter(displ >= 5)
+mean(mpg_displ_1$hwy)
+mean(mpg_displ_2$hwy)
+c(mean(mpg_displ_1$hwy), mean(mpg_displ_2$hwy))
+
+mpg_manufac_a <- mpg %>% filter(manufacturer == "audi")
+mpg_manufac_t <- mpg %>% filter(manufacturer == "toyota")
+mean(mpg_manufac_a$cty)
+mean(mpg_manufac_t$cty)
+c(mean(mpg_manufac_a$cty), mean(mpg_manufac_t$cty))
+
+mpg_manufac_1 <- mpg %>% filter(manufacturer %in% c("chevrolet", "ford", "honda"))
+mean(mpg_manufac_1$hwy)
+
+exam %>% select(class, math, english)
+exam %>% select(-math)
+exam %>% filter(class == 1) %>% select(english)
+
+mpg_var_2c <- mpg %>% select(class, cty)
+mpg_var_2c
+mpg_class_cty1 <- mpg_var_2c %>% filter(class == "suv")
+mpg_class_cty2 <- mpg_var_2c %>% filter(class == "compact")
+head(mpg_class_cty1)
+head(mpg_class_cty2)
+mean(mpg_class_cty1$cty)
+mean(mpg_class_cty2$cty)
+
+
+exam %>% arrange(math)
+exam %>% arrange(desc(math))
+
+mpg %>% 
+  filter(manufacturer == "audi") %>% 
+  arrange(desc(hwy)) %>% 
+  head(5)
+
+exam %>% 
+  mutate(total = math + english + science) %>% 
+  head
+head(exam)
+
+View(mpg)
+
+mpg_new <- as.data.frame(ggplot2::mpg)
+rm(mpg_copy)
+mpg_copy <- mpg_new
+head(mpg_copy)
+
+mpg_copy <- mpg_copy %>% mutate(total = cty + hwy)
+head(mpg_copy)
+mpg_copy <- mpg_copy %>% mutate(mean = total / 2)
+mpg_copy %>% 
+  arrange(desc(mean)) %>% 
+  head(3)
+
+mpg_new %>% mutate(total = cty + hwy, mean = (cty + hwy)/2) %>% 
+  arrange(desc(mean)) %>% 
+  head(3)
+
+exam %>% summarise(mean_math = mean(math))
+
+exam %>% 
+  group_by(class) %>% 
+  summarise(mean_math = mean(math))
+
+exam %>% 
+  group_by(class) %>% 
+  summarise(mean_math = mean(math),
+            n = n())
+
+mpg %>% 
+  group_by(class) %>% 
+  summarise(mean_cty = mean(cty))
+
+mpg %>% 
+  group_by(class) %>% 
+  summarise(mean_cty = mean(cty)) %>% 
+  arrange(desc(mean_cty))
+
+mpg %>% 
+  group_by(manufacturer) %>% 
+  summarise(mean_hwy = mean(hwy)) %>% 
+  arrange(desc(mean_hwy)) %>% 
+  head(3)
+
+mpg %>% 
+  group_by(manufacturer) %>% 
+  filter(class == "compact") %>% 
+  summarise(n = n()) %>% 
+  arrange(desc(n))
+
+
+mpg %>% 
+  group_by(class) %>% 
+  summarise(n = n()) %>% 
+  arrange(desc(n))
+
+mpg %>% 
+  group_by(manufacturer) %>% 
+  summarise(n = n()) %>% 
+  arrange(-n)
+
+mpg %>% 
+  group_by(manufacturer) %>% 
+  summarise(n = n()) %>% 
+  arrange(desc(n))
+
+midwest
+glimpse(midwest)
+
+
+# 데이터 불러오기
+midwest <- as.data.frame(ggplot2::midwest)
+
+
+# 문제 1
+midwest <- midwest %>% 
+  mutate(ratio_nonadult = ((poptotal - popadults)/poptotal)*100)
+glimpse(midwest)
+hist(midwest$ratio_nonadult)
+
+# 문제2
+midwest %>% 
+  select(county, ratio_nonadult) %>% 
+  arrange(-ratio_nonadult) %>% 
+  head(5)
+
+# 문제3
+midwest <- midwest %>% 
+  mutate(Grade = ifelse(ratio_nonadult >= 40, "large", 
+                        ifelse(ratio_nonadult >= 30, "middle", 
+                               "small")))
+glimpse(midwest)
+table(midwest$Grade)
+
+# 문제4
+midwest <- midwest %>% 
+  mutate(ratio_asian = (popasian/poptotal)*100)
+glimpse(midwest)
+hist(midwest$ratio_asian)
+summary(midwest$ratio_asian)
+
+midwest %>% 
+  select(state, county, ratio_asian) %>% 
+  arrange(ratio_asian) %>% 
+  head(10)
+
+midwest %>% 
+  group_by(state, county, min(ratio_asian, 10)) %>% 
+  arrange(ratio_asian)
+
+data(package="ggplot2")
+
+# mpg파일내 자동차 종류 비율
+
+mpg %>% 
+  group_by(class) %>% 
+  summarise(n = n()) %>% 
+  mutate(ratio_class = n / sum(n)*100)
+
+mpg %>% 
+  group_by(manufacturer) %>% 
+  summarise(n = n()) %>% 
+  mutate(ratio_manufac = n / sum(n)) %>% 
+  arrange(-ratio_manufac) 
+
+
+mpg %>% 
+  group_by(manufacturer) %>% 
+  summarise(n = n()) %>% 
+  mutate(ratio_manufac = n / sum(n)) %>% 
+  filter(ratio_manufac >= 0.1) %>% 
+  arrange(-ratio_manufac) 
+
+mpg %>% 
+  group_by(class) %>% 
+  summarise(n = n())
+
+mpg %>% 
+  count(class, sort = T)
+
+head(exam)
+
+exam %>% arrange(class, -math)
+
+mpg %>% 
+  group_by(manufacturer, drv) %>% 
+  summarise(mean_cty = mean(cty)) %>% 
+  head(10)
+
+mpg %>% 
+  group_by(class, drv) %>% 
+  summarise(mean_hwy = mean(hwy)) %>% 
+  head(10)
+
+mpg %>% 
+  group_by(manufacturer, class) %>% 
+  summarise(n = n()) %>% 
+  head(10)
+
+mpg %>% 
+  group_by(manufacturer, class) %>% 
+  summarise(n = n()) %>% 
+  mutate(ratio_mc = n / sum(n))
+
+str(flights)
+
+?flights
+?mpg
+
+table(flights$flight)
+View(flights)
+
+flights %>% 
+  mutate(o_to_d = origin & dest)
+str(flights)
+
+flights %>% 
+  mutate(dep_delay_grade = ifelse(dep_delay > 0, "Y", "N")) %>% 
+  filter(dep_delay_grade == "Y") %>% 
+  group_by(carrier, dest) %>% 
+  summarise(n = n()) %>% 
+  mutate(ratio_delay = n / ncol(flights$dep_delay == "Y") %>% 
+  arrange(-ratio_delay) %>% 
+  head(10)
+
+flights <- as.data.frame(nycflights13::flights)
+  
+flights %>% 
+  mutate(arr_delay_grade = ifelse(arr_delay > 0, "Y", "N")) %>% 
+  filter(arr_delay_grade == "Y") %>% 
+  group_by(carrier, dest) %>% 
+  summarise(n = n()) %>% 
+  mutate(ratio_arrdelay = n / nrow(flights %>% filter(arr_delay > 0))) %>% 
+  arrange(-ratio_arrdelay) %>% 
+  head(20)
+
+
+mpg %>% 
+  group_by(manufacturer, drv) %>% 
+  summarise(n = n()) %>% 
+  mutate(ratio_drv = n / sum(n)*100)
+
+
+mpg %>% ggplot(aes(x=displ, y=hwy)) + 
+  geom_point() + 
+  xlim(2, 7) +
+  ylim(10, 30)
+
+mpg %>% ggplot(aes(x=cty, y=hwy)) +
+  geom_point()
+
+midwest %>% ggplot(aes(x=poptotal, y=popasian)) +
+  geom_point() +
+  xlim(0, 500000)+
+  ylim(0, 10000) +
+  geom_smooth()
+
+economics %>%  ggplot(aes(x = date, y = unemploy)) +
+  geom_line() +
+  geom_smooth()
+
+data("economics")
+economics <- as.data.frame(ggplot2::economics)
+
+economics %>%  ggplot(aes(x = date, y = pater)) +
+  geom_line() +
+  geom_smooth()
+
+df_mpg <- mpg %>% 
+  group_by(drv) %>% 
+  summarise(mean_hwy = mean(hwy))
+
+glimpse(df_mpg)
+
+df_mpg %>%  ggplot(aes(x = drv, y = mean_hwy)) +
+  geom_col()
+
+df_mpg %>%  ggplot(aes(x = reorder(drv, -mean_hwy), y = mean_hwy)) +
+  geom_col()
+
+mpg_suv <- mpg %>% 
+  filter(class == "suv") %>% 
+  group_by(manufacturer) %>% 
+  summarise(mean_cty = mean(cty)) %>% 
+  arrange(-mean_cty) %>% 
+  head(5)
+
+mpg_suv %>% ggplot(aes(x = reorder(manufacturer, -mean_cty), 
+                       y = mean_cty)) + geom_col()
+
+mpg_class <- mpg %>% 
+  group_by(class) %>% 
+  summarise(mean_hwy = mean(hwy))
+
+mpg_class %>% ggplot(aes(x=class, y=mean_hwy)) + 
+  geom_col()
+
+mpg_class %>% ggplot(aes(x=reorder(class, -mean_hwy), y=mean_hwy)) + 
+  geom_col()
+
+glimpse(mpg)
+
+mpg_hy <- mpg %>% 
+  filter(manufacturer == "hyundai") %>% 
+  group_by(model) %>% 
+  summarise(mean_hwy = mean(hwy)) %>% 
+  arrange(-mean_hwy)
+
+mpg_hy
+
+
+mpg_class2 <- mpg %>% 
+  filter(class %in% c("compact", "subcompact", "suv"))
+
+mpg_class2 %>% ggplot(aes(x=class, y=cty)) +
+  geom_boxplot()
+
+install.packages("plotly")
+library(plotly)
+
+
+test1 <- data.frame(id = c(1, 2, 3, 4, 5),
+                    midterm = c(60, 80, 70, 90, 85))
+
+test2 <- data.frame(id = c(1, 2, 3, 4, 5),
+                    final = c(70, 83, 65, 95, 80))
+
+total <- left_join(test1, test2, by = "id")
+total
+
+glimpse(exam)
+
+name <- data.frame(class = c(1, 2, 3, 4, 5),
+                   teacher = c("kim", "lee", "park", "choi", "jung"))
+
+exam_new <- left_join(exam, name, by = "class")
+exam_new
+
+group_a <- data.frame(id = c(1, 2, 3, 4, 5),                       
+                      test = c(60, 80, 70, 90, 85))
+
+group_b <- data.frame(id = c(6, 7, 8, 9, 10),                       
+                      test = c(70, 83, 65, 95, 80))
+
+group_all <- bind_rows(group_a, group_b)
+
+fuel <- data.frame(fl = c("c", "d", "e", "p", "r"),
+                   price_fl = c(2.35, 2.38, 2.11, 2.76, 2.22), 
+                   stringsAsFactors = F)
+glimpse(fuel)
+
+glimpse(mpg)
+
+table(mpg$fl)
+
+mpg_new <- left_join(mpg, fuel, by = "fl")
+glimpse(mpg_new)
+
+mpg_new %>% 
+  select(model, fl, price_fl) %>% 
+  head(5)
+
+table(mpg_new$price_fl)
+
+df <- data.frame(sex = c("M", "F", NA, "M", "F"),
+                 score = c(5, 4, 3, 4, NA))
+table(is.na(df))
+
+table(is.na(df$sex))
+table(is.na(df$score))
+
+df %>% filter(!is.na(score)) 
+
+df_nomiss <- df %>% filter(!is.na(score), !is.na(sex)) 
+
+mean(df_nomiss$score)
+
+exam
+
+exam[c(3, 5, 8), "math"] <- NA
+
+mean(exam$math, na.rm = T)
+
+exam$math <- ifelse(is.na(exam$math), 55, exam$math)
+table(is.na(exam$math))
+
+mean(exam$math)
+
+mpg <- as.data.frame(ggplot2::mpg)
+mpg[c(65, 124, 131, 153, 212), "hwy"] <- NA
+glimpse(mpg)
+
+table(is.na(mpg$drv))
+table(is.na(mpg$hwy))
+
+mpg %>% 
+  filter(!is.na(hwy)) %>% 
+  group_by(drv) %>% 
+  summarise(mean_hwy = mean(hwy))
+
+outlier <- data.frame(sex = c(1, 2, 1, 3, 2, 1),
+                      score = c(5, 4, 3, 4, 2, 6))
+table(outlier$sex)
+table(outlier$score)
+
+outlier$sex <- ifelse(outlier$sex == 3, NA, outlier$sex)
+
+outlier$score <- ifelse(outlier$score > 5, NA, outlier$score)
+
+mean(outlier$score, na.rm = T)
+
+boxplot(mpg$hwy)
+boxplot(mpg$hwy)$stats
+
+mpg$hwy <- ifelse(mpg$hwy < 12 | mpg$hwy > 37, NA, mpg$hwy )
+table(is.na(mpg$hwy))
+
+table(mpg$drv)
+
+mpg <- as.data.frame(ggplot2::mpg)
+mpg[c(10, 14, 58, 93), "drv"] <- "k"
+mpg[c(29, 43, 129, 203), "cty"] <- c(3, 4, 39, 42)
+
+mpg$drv <- ifelse(mpg$drv %in% "k", NA, mpg$drv)
+
+boxplot(mpg$cty)
+boxplot(mpg$cty)$stats
+
+mpg$cty <- ifelse(mpg$cty < 9 | mpg$cty >26, NA, mpg$cty)
+boxplot(mpg$cty)
+
+mpg %>% 
+  filter(!is.na(drv)) %>% 
+  group_by(drv) %>% 
+  summarise(mean_cty = mean(cty, na.rm = T))
+
+install.packages("foregin")
+library(foreign)
+
+raw_welfare <- read.spss("D:/RProject/01_data/실전_복지패널/data_spss_Koweps2014.sav", to.data.frame = T)
+
+welfare <- raw_welfare
+
+glimpse(welfare)
+
+welfare <- welfare %>% 
+  rename(sex = h0901_4,
+         birth = h0901_5,   # 태어난연도
+         income = h09_din)  # 소득
+
+glimpse(welfare)
+
+class(welfare$sex)
+
+welfare$sex <- ifelse(welfare$sex == 1, "male", "female")
+table(welfare$sex)
+
+qplot(welfare$income)
+qplot(welfare$income) + xlim(0, 3000)
+
+summary(welfare$birth)
+class(welfare$birth)
+qplot(welfare$birth)
+
+welfare <-welfare %>% 
+  mutate(age = 2014 - birth + 1)
+
+summary(welfare$age)
+
+welfare %>% ggplot(aes(x = age, y = income, color = sex)) +
+  geom_jitter(height = 2, width = 2)
+
+
+toyota <- read.csv(file = "https://goo.gl/9rt3Na", stringsAsFactors = F)
+
+str(toyota)
+
+toyota$FuelType <- as.factor(toyota$FuelType)
+toyota$MetColor <- as.factor(toyota$MetColor)
+toyota$Automatic <- as.factor(toyota$Automatic)
+
+glimpse(toyota)
+
+dim(toyota)
+
+toyota <- toyota %>% 
+  filter(Price  <= 30000)
+
+rownames(x = toyota) <- NULL
+
+toyota <- toyota %>% 
+  select(-Automatic, -FuelType)
+
+
+
+# Seperating dataset ####
+
+set.seed(1906)
+n <- nrow(toyota)
+idx <- 1:n
+dim(idx)
+training_idx <- sample(idx, n * .60)
+idx <- setdiff(idx, training_idx)
+validate_idx = sample(idx, n * .20)
+test_idx <- setdiff(idx, validate_idx)
+length(training_idx)
+length(validate_idx)
+length(test_idx)
+training <- toyota[training_idx,]
+validation <- toyota[validate_idx,]
+test <- toyota[test_idx,]
+
+fit1 <- lm(Price ~ Age, data = training)
+summary(fit1)
+
+par(mfrow = c(2, 2))
+plot(fit1)
+par(mfrow = c(1, 1))
+
+install.packages("car")
+library(car)
+
+shapiro.test(fit1$residuals)
+ncvTest(fit1)
+durbinWatsonTest(fit1)
+crPlots(fit1)
+influencePlot(fit1)
+
+full <- lm(Price ~., data=training)
+null <- lm(Price ~1, data=training)
+fit2 <- step(null, scope = list(lower=null, upper = full),
+             direction = "both")
+fit2
+summary(fit2)
+
+par(mfrow = c(2, 2))
+plot(fit2)
+par(mfrow = c(1, 1))
+
+install.packages("DAAG")
+library(DAAG)
+DAAG::vif(fit2)
+
+install.packages("lm.beta")
+library(lm.beta)
+lm.beta::lm.beta(fit2)
+
+pred2 <- predict(fit2, newdata = validation, type = "response")
+pred2
+
+real <- validation$Price
+
+error1 <- real - pred2
+
+library(dplyr)
+error1^2 %>% mean()
+error1^2 %>% mean() %>% sqrt()
+error1^2 %>% abs() %>% mean()
+(abs(x=error1)/abs(x=real)) %>% mean()
+
+
+library(httr)
+library(rvest)
+install.packages("jasonlite")
+library(jasonlite)
+
+https://www.diningcode.com/list.php?query=%EC%9D%BC%EC%8B%9D
+
+res <- GET(url = "https://www.diningcode.com/list.php",
+query=list(query = I("%EC%9D%BC%EC%8B%9D")))
+
+print(res)
+
+items <- res %>% read_html() %>% html_nodes(css = "ul#div_list > li > a") 
+length(items)
+print(items)
+
+items %>% html_node(css = "span.btxt") %>% html_text()
+items %>% html_node(css = "span.stxt") %>% html_text()
+items %>% html_node(css = "span.ctxt") %>% html_text()
+items %>% html_node(css = "span.ctxt > i") %>% html_text()
+
+set.seed(1234)
+
+wgt <- rnorm(n = 10, mean = 170, sd = 10)
+wgt
+
+scaled <- scale(wgt)
+
+mean(scaled)
+sd(scaled)
+
+scale(wgt, center = min(wgt), scale = max(wgt) - min(wgt))
+
+df <- data.frame(x = c(1, 4), y = c(1, 5))
+df
+dist(df, method = "manhattan")
+dist(df, method = "euclidean")
+dist(df, method = "minkowski", p=3)
+dist(df, method = "maximum")
+
+install.packages("factoextra")
+library(factoextra)
+
+data(USArrests)
+USArrests
+
+USAscaled <- scale(USArrests)
+class(USAscaled)
+View(USAscaled)
+
+
+fit1 <- eclust(USAscaled, FUNcluster = "kmeans", k=3, seed = 1234)
+
+print(fit1)
+
+fit1$silinfo
+fit1$nbclust
+
+fviz_silhouette(fit1)
+
+fviz_nbclust(USAscaled, FUNcluster = kmeans, method = "silhouette", linecolor = "red")
+fviz_nbclust(USAscaled, FUNcluster = kmeans, method = "wss", linecolor = "red")
+
+fit2 <- eclust(USAscaled, FUNcluster = "kmeans", k=2, seed = 1234)
+print(fit2)
+
+fviz_cluster(object = fit2, repel = T, ellipse = T, ellipse.type = "norm", theme_bw())
+
+mu <- sapply(USArrests, FUN = mean)
+sd <- sapply(USArrests, FUN = sd)
+
+fit2$centers
+t(fit2$centers)
+
+centers <- t(x = fit2$centers)*sd + mu)
+
+t(centers)
+
+
+bank <- read.csv(file = "https://goo.gl/vE8GyN", stringsAsFactors = F)
+str(bank)
+head(bank, 10)
+summary(bank)
+
+bank <- bank %>% 
+  mutate(Education = as.factor(Education),
+         PersonalLoan = as.factor(PersonalLoan),
+         SecuritiesAccount = as.factor(SecuritiesAccount),
+         CDAccount = as.factor(CDAccount),
+         Online = as.factor(Online),
+         CreditCard = as.factor(CreditCard))
+
+glimpse(bank)
+
+summary(bank)
+
+bank$PersonalLoan %>% table() %>% prop.table()
+
+
+library(caret)
+
+bank <- bank %>% select(-ID, -ZIP.Code)
+
+set.seed(seed)
+
+index <- createDataPartition(y = bank$PersonalLoan, p = 0.7, list = F)
+index
+
+training.set <- bank %>% 
+  filter(rownames(.) %in% index)
+
+test.set <- bank %>% 
+  filter(!rownames(.) %in% index)
+
+training.set$PersonalLoan %>% table() %>% prop.table()
+
+test.set$PersonalLoan %>% table() %>% prop.table()
+
+install.packages("ROSE")
+
+library(ROSE)
+ovun.sample
+
+set.seed(seed)
+training.setBal <- ovun.sample(formula = PersonalLoan ~., data = training.set,
+                               method = "both",p = 0.5)
+
+class(training.setBal)
+
+training.setBal <- training.setBal$data
+
+training.setBal$PersonalLoan %>% table() %>% prop.table()
+
+library(rpart)
+
+set.seed(seed)
+fit1 <- rpart(formula = PersonalLoan ~., 
+              data = training.set, 
+              method = "class",
+              parms = list(split = "gini"),
+              control = rpart.control(minisplit = 20,
+                                      cp = .01,
+                                      maxdepth = 10))
+fit1
+summary(fit1)
+
+plot(fit1, compress = T, uniform = T, branch = 0.4, margin = 0.05)
+text(fit1, use.n = T, all = T, cex = 1.2)
+
+install.packages("rpart.plot")
+library(rpart.plot)
+
+rpart.plot(fit1, type = 2, extra = 106, fallen.leaves = F)
+rpart.plot(fit1, type = 2, extra = 104, fallen.leaves = F)
+
+printcp(fit1)
+plotcp(fit1)
+plotcp
+
+set.seed(seed)
+fit1 <- rpart(formula = PersonalLoan ~., 
+              data = training.set,
+              method = "class",
+              parms = list(split="gini"),
+              control = rpart.control(minsplit = 20,
+                                      cp = 0.001,
+                                      maxdepth = 30))
+summary(fit1)
+plotcp(fit1)
+
+fit2 <- prune.rpart(fit1, cp = 0.0042)
+plotcp(fit2)
+
+fit2 <- rpart(formula = PersonalLoan ~., 
+              data = training.set,
+              method = "class",
+              parms = list(split = "gini"),
+              control = rpart.control(minsplit = 20,
+                                      cp = 0.0042,
+                                      maxdepth = 30))
+plotcp(fit2)
+fit2
+summary(fit2)
+
+pred1 <- predict(fit1, newdata = test.set, type = "class")
+pred2 <- predict(fit2, newdata = test.set, type = "class")
+real <- test.set$PersonalLoan
+
+confusionMatrix(pred1, reference = real, positive = "1")
+confusionMatrix(pred2, reference = real, positive = "1")
+
+install.packages("MLmetrics")
+library(MLmetrics)
+
+F1_Score(y_pred = pred1, y_true = real, positive = "1")
+F1_Score(y_pred = pred2, y_true = real, positive = "1")
+
+library(ROCR)
+
+predObj <- prediction(predictions = as.numeric(pred1),
+                      labels = as.numeric(real))
+
+perform <- performance(prediction.obj = predObj,
+                       measure = "tpr",
+                       x.measure = "fpr")
+plot(perform)
+
+install.packages("pROC")
+library(pROC)
+
+auc(response = as.numeric(real),
+    predictor = as.numeric(pred1))
+
+auc(response = as.numeric(real),
+    predictor = as.numeric(pred2))
+
+titanic <- read.csv(file="https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv", stringsAsfactor = F)
+
+titanic <- read.csv(file = 'https://stanford.io/2Zr2nyT',
+                    stringsAsFactors = FALSE)
+
+str(titanic)
+
+titanic[, c("Survived", "Pclass", "Sex")] <- lapply(titanic[, c("Survived", "Pclass", "Sex")], FUN = as.factor)
+str(titanic)
+
+titanic <- titanic %>% 
+  select(-Name) %>% 
+  rename(SibSpo = Siblings.Spouses.Aboard,
+         Parchi = Parents.Children.Aboard)
+
+glimpse(titanic)
+
+summary(titanic)
+
+with(titanic, cor(Fare, as.numeric(Pclass), method = "spearman"))
+
+fit <- rpart(formula = Survived ~., data = titanic,
+      parms = list(split = "gini"),
+      control = rpart.control(minsplit = 20,
+                              cp = 0.01,
+                              maxdepth = 30))
+summary(fit)
+
+plot(fit, compress = T, uniform = T, branch = 0.4, margin = 0.05)
+text(fit, use.n = T, all = T, cex = 1.2)
+
+rpart.plot(fit, type = 2, extra = 104, fallen.leaves = F)
+
+pred <- predict(fit, newdata = titanic, type = "class")
+
+real <- titanic$Survived
+
+confusionMatrix(pred, reference = real, positive = "1")
+
+F1_Score(y_pred = pred, y_true = real, positive = "1")
+
+predObj <- prediction(predictions = as.numeric(pred),
+                      labels = as.numeric(real))
+perform <- performance(prediction.obj = predObj,
+                       measure = "tpr",
+                       x.measure = "fpr")
+plot(perform)
+
+auc(response = as.numeric(real),
+    predictor = as.numeric(pred))
